@@ -1,0 +1,84 @@
+# ==========================================================================================
+DATABASE:
+  database: quantspark4
+  transaction_table_stage: tmp_transactions
+  stock_table_stage: tmp_stocks
+  cocktail_table_stage: tmp_cocktails
+  glass_table_stage: tmp_glasses
+  date_table: dim_date
+  initial_load: true
+# ==========================================================================================
+API:
+  glass:
+    name: glass_api
+    request_obj:
+      url: https://www.thecocktaildb.com/api/json/v1/1/list.php?g=list
+    data_field: drinks
+    columns_mapping:
+      strGlass: glass
+    capitalize_columns:
+      - glass
+  cocktail:
+    name: drinks_api
+    request_obj:
+      url: https://www.thecocktaildb.com/api/json/v1/1/filter.php?g={glass}
+    data_field: drinks
+    columns_mapping:
+      strDrink: drink
+    drop_columns:
+      - strDrinkThumb
+      - idDrink
+    capitalize_columns:
+      - drink
+# ==========================================================================================
+CSV:
+  transactions:
+    - name: Budapest
+      pandas_kwargs:
+        filepath_or_buffer: 'data/budapest.csv'
+        parse_dates:
+            - 1
+        date_format: '%Y-%m-%d %H:%M:%S'
+        index_col:
+            - 0
+      columns_mapping:
+        TS: time
+        ital: drink
+        költség: amount
+      capitalize_columns:
+        - drink
+
+    - name: London
+      pandas_kwargs:
+        filepath_or_buffer: 'data/london_transactions.csv'
+        sep: '\t'
+        header: null
+        parse_dates:
+            - 1
+        date_format: '%Y-%m-%d %H:%M:%S'
+      drop_columns: 
+          - 0
+      columns_mapping:  
+        1: time
+        2: drink
+        3: amount   
+      capitalize_columns:
+        - drink
+
+    - name: New York
+      pandas_kwargs:
+        filepath_or_buffer: 'data/ny.csv'
+        parse_dates:
+            - 1
+        date_format: '%m-%d-%Y %H:%M'
+        index_col:
+            - 0
+      capitalize_columns:
+      - drink
+  bar_stock:
+    name: bar_stock
+    pandas_kwargs:
+      filepath_or_buffer: 'data/bar_data.csv'
+    capitalize_columns:
+        - bar
+        - glass_type
