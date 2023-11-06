@@ -1,11 +1,8 @@
 import os
-import logging
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine, UniqueConstraint, ForeignKey
 from sqlalchemy import Column, Integer, String, DateTime, DECIMAL
 from sqlalchemy.ext.declarative import declarative_base
-
-loggger = logging.getLogger(__name__)
 
 Base = declarative_base()
 
@@ -127,13 +124,13 @@ WHEN NOT MATCHED THEN
 """
 
 if __name__ == "__main__":
-    db_user = os.environ["DB_USER"]
-    db_password = os.environ["DB_PASSWORD"]
-    db_host = os.environ["DB_HOST"]
-    db_port = os.environ["DB_PORT"]
-    db_name = os.environ["DB_NAME"]
+    db_user = os.environ["PG_USER"]
+    db_password = os.environ["PG_PASSWORD"]
+    db_host = os.environ["PG_HOST"]
+    db_port = os.environ["PG_PORT"]
+    db_name = os.environ["PG_DATABASE"]
 
-    loggger.info("Creating tables")
+    print("Creating tables")
     engine = create_engine(
         f"postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}"
     )
@@ -142,4 +139,4 @@ if __name__ == "__main__":
     session = Session()
     session.commit()
     session.close()
-    loggger.info("Tables created")
+    print("Tables created")

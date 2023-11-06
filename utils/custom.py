@@ -4,8 +4,9 @@ from typing import List, Dict, Callable, Optional
 import pandas as pd
 import pandera as pa
 
-import logging
-logger = logging.getLogger(__name__)
+logger = logging.getLogger()
+
+
 # Schema validation for transaction and bar data
 bar_stock_schema = pa.DataFrameSchema(
     {

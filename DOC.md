@@ -1,66 +1,31 @@
-## Data Errors
-==========
-- Some cocktails in the transaction files are not available in the cocktails database API. 
-- London bar has copper mug spelt wrong in the bar_data csv file. 
-- New York bar has a an error in the stock data for highball glass.
-- There is a lot of inconsistency in the capitalisation of the glass and cocktail names.
+# Analytics-engineering test
 
-## Config.yaml
-======
-This file serves as the central configuration file for our pipeline. Within this file, we define essential parameters for configuring the data flow. It serves as  the blueprint for the data's journey, encompassing data source definitions and the specific transformations to be applied to them. Additionally, it holds parameters for our database and tables.
+### Requirements
 
-** Structure: **
-The file comprises three main sections, each of which plays a pivotal role in orchestrating the data processing pipeline:
+- Python
+- You can expect to spend around 2-3 hours on this task.
 
-- API: Under this section, we define data sources from various APIs. It includes the specifications, parameters, and any custom configurations necessary to fetch data from these sources and process them into a pandas data frame.
+### Client
 
-- CSV: In this segment, we specify the data sources from CSV files. Similar to the API section, it holds parameters and custom configurations required for handling CSV data into a pandas data frame.
+The client is the owner of a high-end chain of bars. The company's data infrastructure is old and many of the pipelines are slow or built using niche software. The owner wants to future proof the pipelines by converting them to Python.
 
-- Database: The database  name and specific tables needs to be defined in this section of the file. 
+We want to give the client confidence that we have the technical skills and the experience to refactor their entire data setup. To that end, we are building a PoC pipeline for the client to show off our abilities. They have chosen their transaction data as a key pipeline and have provided a sample dataset for their transactions and inventory, as well as an API endpoint for their menu. Your task is to build that PoC pipeline.
 
-# Example parameters for CSV and API extraction
-```
-wwwww
-```
-## Test
-=====
-This is where all the utility functions are tested to make sure they produce the expected results when they get the correct input. 
+### Resources
 
+- Transactions data for 3 bars in the form of CSVs.
+- Glass stock data for those three bars as a CSV.
+- They use the online cocktails database (`https://www.thecocktaildb.com/api.php`) for their menu and all bars serve a subset of these drinks according to the instructions in the database.
 
-## Steps to run the pipeline
+### Task
 
-#### Export Required Parameters 
-```
-export DB_USER=""
-export DB_PASSWORD=""
-export DB_HOST=""
-export DB_PORT=""
-export DB_NAME=""
-```
+- You will provide production level Python code to read the data and process it, ready to be inserted into a Postgres RDS database.
+- We want tables that will store data on the bars, transactions, glasses and which glasses are used for which cocktail. We do not need additional data on the cocktails themselves such as the ingredients.
+- You will design the schema for the database and use sqlalchemy to define the necessary tables.
 
-#### Create database tables
-```
-python utils/sql.py 
-```
-
-#### Run the pipeline
-```
-python main.py 
-```
-
-## recomendations
-
-- We talk to the data team if it they can be consistent with the format 
-- we build our data pipeline with the format of our input data
-
-
-## Improvements 
-=========
-Due to time constraint, I was unable to fully implement the time dimension into our data model. The inclusion of a time dimension is of utmost importance in data model design, as it significantly enhances our ability to conduct in-depth analyses. Given more time and context, my approach would involve designing the dimensions as Slowly Changing Dimension (SCD) type 2. This would enable us to capture changes in dimension data and retain historical information.
-
-Implementing SCD type 2 is invaluable for trend analysis, allowing us to answer questions such as how stock levels in a store change over time and which specific products are more abundant at different points in time.
-
-
-# data issue found during validation
-1) Dates are in different format in different stores
-2) One of the rows in the bar data has incorrect entry, this might be caused during data entry
+Considerations:
+- The tables will be used for many downstream purposes, especially an array of dashboards.
+- There are plans to change the source of the transactions data from CSV to API.
+- The code may need to be run frequently so that the data in the database is fresh.
+- The bar company owns many more than these three bars so the volume of data will increase.
+- This pipeline will be run on a production server with many other important pipelines scheduled in.

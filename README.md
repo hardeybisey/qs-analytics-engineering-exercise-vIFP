@@ -1,31 +1,86 @@
-# Analytics-engineering test
+## Config.yaml
+This file serves as the central configuration file for our pipeline. Within this file, we define essential parameters for configuring the data flow. It serves as  the blueprint for the data's journey, encompassing data source definitions and the specific transformations to be applied to them. Additionally, it holds parameters for our database and tables.
 
-### Requirements
+** Structure: **
+The file comprises three main sections, each of which plays a pivotal role in orchestrating the data processing pipeline:
 
-- Python
-- You can expect to spend around 2-3 hours on this task.
+- API: Under this section, we define data sources from various APIs. It includes the specifications, parameters, and any custom configurations necessary to fetch data from these sources and process them into a pandas data frame.
 
-### Client
+- CSV: In this segment, we specify the data sources from CSV files. Similar to the API section, it holds parameters and custom configurations required for handling CSV data into a pandas data frame.
 
-The client is the owner of a high-end chain of bars. The company's data infrastructure is old and many of the pipelines are slow or built using niche software. The owner wants to future proof the pipelines by converting them to Python.
+- Database: The database  name and specific tables needs to be defined in this section of the file. 
 
-We want to give the client confidence that we have the technical skills and the experience to refactor their entire data setup. To that end, we are building a PoC pipeline for the client to show off our abilities. They have chosen their transaction data as a key pipeline and have provided a sample dataset for their transactions and inventory, as well as an API endpoint for their menu. Your task is to build that PoC pipeline.
+# Example parameters for DATABASE, CSV and API in the config file
+```
+DATABASE:
+  transaction_table_stage:  str (required) transactions staging table
+  stock_table_stage: str (required) stock staging table
+  cocktail_table_stage: str (required) cocktail staging table
+  glass_table_stage: str (required) glass staging table
+  date_table:  str (optional) provide this only when initial_load is true
+  initial_load:  bool (required) inidcates if this is an initial load.
+```
+```
+API:
+  glass:
+    name: str(required) name of the data being retrieved
+    request_obj:
+      url:  str (required) endpont of the api
+    data_field: str(required) the field holding the data from the API response
+    columns_mapping: Dict[str](optional) name of columsn to rename
+    capitalize_columns: List(str) columns to convert to title case.
+    drop_columns: List(str) columns to drop from final output.
+```
+```
+CSV:
+  transactions:
+    - name: str(required) name of the data being retrieved
+      pandas_kwargs: Dict[str](required) arguments to pass to pandas read_csv
+        filepath_or_buffer: str (required) csv file path
+        parse_dates: List[int](optional) integer position of columns to parse as date 
+        date_format: str(optional) only required if parse_dates is filled
+        index_col: Int(optional) Integer position of column to use as index
+      columns_mapping: Dict[str](optional) name of columsn to rename
+      capitalize_columns: List(str) columns to convert to title case.
+      drop_columns: List(str) columns to drop from final output.
+```
 
-### Resources
+## Test
+This is where all the utility functions are tested to make sure they produce the expected results when they get the correct input. 
 
-- Transactions data for 3 bars in the form of CSVs.
-- Glass stock data for those three bars as a CSV.
-- They use the online cocktails database (`https://www.thecocktaildb.com/api.php`) for their menu and all bars serve a subset of these drinks according to the instructions in the database.
 
-### Task
+## Steps to run the pipeline
+-  set Database connection Parameters as environment variables
+```
+export PG_USER=""
+export PG_PASSWORD=""
+export PG_HOST=""
+export PG_PORT=""
+export PG_DATABASE=""
+```
+- create a virtual environement and activate it (You must have python > 3.9 installed)
+```
+python -m venv etl
+source etl/bin/activate
+```
+- install dependencies
+```
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+#### Create database tables
+```
+python utils/sql.py 
+```
+#### Run the pipeline
+```
+python main.py 
+```
 
-- You will provide production level Python code to read the data and process it, ready to be inserted into a Postgres RDS database.
-- We want tables that will store data on the bars, transactions, glasses and which glasses are used for which cocktail. We do not need additional data on the cocktails themselves such as the ingredients.
-- You will design the schema for the database and use sqlalchemy to define the necessary tables.
+# Reporting Layer Data Model
+![Image](images/datamodel.png)
 
-Considerations:
-- The tables will be used for many downstream purposes, especially an array of dashboards.
-- There are plans to change the source of the transactions data from CSV to API.
-- The code may need to be run frequently so that the data in the database is fresh.
-- The bar company owns many more than these three bars so the volume of data will increase.
-- This pipeline will be run on a production server with many other important pipelines scheduled in.
+# Relational Data Model
+![Image](images/relationships.png)
+
+

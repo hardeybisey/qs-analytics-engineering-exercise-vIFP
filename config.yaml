@@ -1,6 +1,5 @@
 # ==========================================================================================
 DATABASE:
-  database: test2
   transaction_table_stage: tmp_transactions
   stock_table_stage: tmp_stocks
   cocktail_table_stage: tmp_cocktails
@@ -37,10 +36,9 @@ CSV:
       pandas_kwargs:
         filepath_or_buffer: 'data/budapest.csv'
         parse_dates:
-            - 1
+          - TS
         date_format: '%Y-%m-%d %H:%M:%S'
-        index_col:
-            - 0
+        index_col: 0
       columns_mapping:
         TS: time
         ital: drink
@@ -69,10 +67,9 @@ CSV:
       pandas_kwargs:
         filepath_or_buffer: 'data/ny.csv'
         parse_dates:
-            - 1
+            - time
         date_format: '%m-%d-%Y %H:%M'
-        index_col:
-            - 0
+        index_col: 0
       capitalize_columns:
       - drink
   bar_stock:
