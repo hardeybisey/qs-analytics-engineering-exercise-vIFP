@@ -10,6 +10,7 @@ Due to time constraints, I was unable to fully implement the time dimension into
 
 Implementing SCD type 2 is invaluable for trend analysis, allowing us to answer questions such as how stock levels in a store change over time and which specific products are more abundant at different points in time.
 
+
 ## Config.yaml
 This file serves as the central configuration file for our pipeline. Within this file, we define essential parameters for configuring the data flow. It serves as  the blueprint for the data's journey, encompassing data source definitions and the specific transformations to be applied to them. Additionally, it holds parameters for our database and tables.
 
@@ -22,7 +23,7 @@ The file comprises three main sections, each of which plays a pivotal role in or
 
 - Database: The database  name and specific tables needs to be defined in this section of the file. 
 
-# Example parameters for DATABASE, CSV and API in the config file
+## Example parameters for DATABASE, CSV and API in the config file
 ```
 DATABASE:
   transaction_table_stage:  str (required) transactions staging table
