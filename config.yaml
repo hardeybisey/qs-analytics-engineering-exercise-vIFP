@@ -1,6 +1,6 @@
 # ==========================================================================================
 DATABASE:
-  database: quantspark4
+  database: test2
   transaction_table_stage: tmp_transactions
   stock_table_stage: tmp_stocks
   cocktail_table_stage: tmp_cocktails
