@@ -1,7 +1,19 @@
+## Data Errors
+- Some cocktails in the transaction files are not available in the cocktails database API. 
+- London bar has copper mug spelt wrong in the bar_data csv file. 
+- New York bar has a an error in the stock data for highball glass.
+- There is a lot of inconsistency in the capitalisation of the glass and cocktail names.
+
+
+## Improvements
+Due to time constraints, I was unable to fully implement the time dimension into our data model. The inclusion of a time dimension is of utmost importance in data model design, as it significantly enhances our ability to conduct in-depth analyses. Given more time and context, my approach would involve designing the dimensions as Slowly Changing Dimension (SCD) type 2. This would enable us to capture changes in dimension data and retain historical information.
+
+Implementing SCD type 2 is invaluable for trend analysis, allowing us to answer questions such as how stock levels in a store change over time and which specific products are more abundant at different points in time.
+
 ## Config.yaml
 This file serves as the central configuration file for our pipeline. Within this file, we define essential parameters for configuring the data flow. It serves as  the blueprint for the data's journey, encompassing data source definitions and the specific transformations to be applied to them. Additionally, it holds parameters for our database and tables.
 
-** Structure: **
+**Structure:**
 The file comprises three main sections, each of which plays a pivotal role in orchestrating the data processing pipeline:
 
 - API: Under this section, we define data sources from various APIs. It includes the specifications, parameters, and any custom configurations necessary to fetch data from these sources and process them into a pandas data frame.
