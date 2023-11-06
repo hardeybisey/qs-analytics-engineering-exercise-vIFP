@@ -10,6 +10,7 @@ Due to time constraints, I was unable to fully implement the time dimension into
 
 Implementing SCD type 2 is invaluable for trend analysis, allowing us to answer questions such as how stock levels in a store change over time and which specific products are more abundant at different points in time.
 
+Another valuable enhancement that can be incorporated into the pipeline is the adoption of workflow orchestration tools to define and manage the pipeline's workflow. Tools such as Apache Airflow or Google Cloud Composer can be employed to achieve this level of functionality.
 
 ## Config.yaml
 This file serves as the central configuration file for our pipeline. Within this file, we define essential parameters for configuring the data flow. It serves as  the blueprint for the data's journey, encompassing data source definitions and the specific transformations to be applied to them. Additionally, it holds parameters for our database and tables.
