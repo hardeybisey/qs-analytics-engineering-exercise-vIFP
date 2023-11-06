@@ -1,4 +1,5 @@
 **venv/**
 **cpython**
 .DS_Store**
-**.ipynb**
+test.ipynb
+DOC.md
